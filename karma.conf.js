@@ -15,10 +15,12 @@ module.exports = function(config) {
     files: [].concat(
       bowerFiles,
       'scripts/**/*.js',
-      'logger/**/*.js',
+      'logger/logger.module.js',
+      'logger/*.js',
       'tests/test-helpers/*.js',
       './services/**/*.module.js',
       './services/**/*.js',
+      'filters/**/*.js',
       'tests/server-integration/**/*.spec.js'
     ),
 
@@ -32,7 +34,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      './app/**/!(*.spec)+(.js)': ['coverage']
+      './services/**/!(*.spec)+(.js)': ['coverage']
     },
 
     // test results reporter to use
