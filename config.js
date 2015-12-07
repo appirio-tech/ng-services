@@ -1,13 +1,14 @@
 module.exports = function() {
   return {
-    'development': {
-      'CONSTANTS': {
+    development: {
+      CONSTANTS: {
         API_URL: process.env.API_URL || 'https://api.topcoder-dev.com/v3',
         AUTH_API_URL: process.env.AUTH_API_URL || 'https://api.topcoder-dev.com/v3',
         API_URL_V2: process.env.API_URL_V2 || 'https://api.topcoder-dev.com/v2',
         ASSET_PREFIX: process.env.ASSET_PREFIX || '',
-        auth0Callback: process.env.auth0Callback || 'https://api.topcoder-dev.com/pub/callback.html',
+
         // auth0Callback: process.env.auth0Callback || 'https://www.topcoder-dev.com/reg2/callback.action',
+        auth0Callback: process.env.auth0Callback || 'https://api.topcoder-dev.com/pub/callback.html',
         auth0Domain: process.env.auth0Domain || 'topcoder-dev.auth0.com',
         BLOG_LOCATION: 'https://www.topcoder-dev.com/feed/?post_type=blog',
         clientId: process.env.clientId || 'JFDo7HMkf0q2CkVFHojy3zHWafziprhT',
@@ -35,7 +36,7 @@ module.exports = function() {
         STATE_ERROR: 'error',
         STATE_READY: 'ready',
 
-        BUSY_PROGRESS_MESSAGE : 'Processing..',
+        BUSY_PROGRESS_MESSAGE: 'Processing..',
 
         // srm phases
         REGISTRATION: 'REGISTRATION',
@@ -43,17 +44,17 @@ module.exports = function() {
 
         // users' status
         REGISTERED: 'REGISTERED'
-
       }
     },
-    'qa': {
-      'CONSTANTS': {
+    qa: {
+      CONSTANTS: {
         API_URL: process.env.API_URL || 'https://api.topcoder-qa.com/v3.0.0',
         AUTH_API_URL: process.env.AUTH_API_URL || 'https://api.topcoder-qa.com/v3',
         API_URL_V2: process.env.API_URL_V2 || 'https://api.topcoder-qa.com/v2',
         ASSET_PREFIX: process.env.ASSET_PREFIX || '',
-        auth0Callback: process.env.auth0Callback || 'https://api.topcoder-qa.com/pub/callback.html',
+
         // auth0Callback: process.env.auth0Callback || 'https://www.topcoder-qa.com/reg2/callback.action',
+        auth0Callback: process.env.auth0Callback || 'https://api.topcoder-qa.com/pub/callback.html',
         auth0Domain: process.env.auth0Domain || 'topcoder-qa.auth0.com',
         BLOG_LOCATION: 'https://www.topcoder-qa.com/feed/?post_type=blog',
         clientId: process.env.clientId || 'EVOgWZlCtIFlbehkq02treuRRoJk12UR',
@@ -81,7 +82,7 @@ module.exports = function() {
         STATE_ERROR: 'error',
         STATE_READY: 'ready',
 
-        BUSY_PROGRESS_MESSAGE : 'Processing..',
+        BUSY_PROGRESS_MESSAGE: 'Processing..',
 
         // srm phases
         REGISTRATION: 'REGISTRATION',
@@ -89,17 +90,17 @@ module.exports = function() {
 
         // users' status
         REGISTERED: 'REGISTERED'
-
       }
     },
     'qa-beta': {
-      'CONSTANTS': {
+      CONSTANTS: {
         API_URL: process.env.API_URL || 'https://api.topcoder-qa.com/v3.0.0-BETA',
         AUTH_API_URL: process.env.AUTH_API_URL || 'https://api.topcoder-qa.com/v3',
         API_URL_V2: process.env.API_URL_V2 || 'https://api.topcoder-qa.com/v2',
         ASSET_PREFIX: process.env.ASSET_PREFIX || '',
-        auth0Callback: process.env.auth0Callback || 'https://api.topcoder-qa.com/pub/callback.html',
+
         // auth0Callback: process.env.auth0Callback || 'https://www.topcoder-qa.com/reg2/callback.action',
+        auth0Callback: process.env.auth0Callback || 'https://api.topcoder-qa.com/pub/callback.html',
         auth0Domain: process.env.auth0Domain || 'topcoder-qa.auth0.com',
         BLOG_LOCATION: 'https://www.topcoder-qa.com/feed/?post_type=blog',
         clientId: process.env.clientId || 'EVOgWZlCtIFlbehkq02treuRRoJk12UR',
@@ -127,7 +128,7 @@ module.exports = function() {
         STATE_ERROR: 'error',
         STATE_READY: 'ready',
 
-        BUSY_PROGRESS_MESSAGE : 'Processing..',
+        BUSY_PROGRESS_MESSAGE: 'Processing..',
 
         // srm phases
         REGISTRATION: 'REGISTRATION',
@@ -135,17 +136,17 @@ module.exports = function() {
 
         // users' status
         REGISTERED: 'REGISTERED'
-
       }
     },
     'production-beta': {
-      'CONSTANTS': {
+      CONSTANTS: {
         API_URL: process.env.API_URL || 'https://api.topcoder.com/v3.0.0-BETA',
         AUTH_API_URL: process.env.AUTH_API_URL || 'https://api.topcoder.com/v3',
         API_URL_V2: process.env.API_URL_V2 || 'https://api.topcoder.com/v2',
         ASSET_PREFIX: process.env.ASSET_PREFIX || 'https://s3.amazonaws.com/app.topcoder.com',
-        auth0Callback: process.env.auth0Callback || 'https://api.topcoder.com/pub/callback.html',
+
         // auth0Callback: process.env.auth0Callback || 'https://www.topcoder.com/reg2/callback.action',
+        auth0Callback: process.env.auth0Callback || 'https://api.topcoder.com/pub/callback.html',
         auth0Domain: process.env.auth0Domain || 'topcoder.auth0.com',
         BLOG_LOCATION: 'https://www.topcoder.com/feed/?post_type=blog',
         clientId: process.env.clientId || 'JFDo7HMkf0q2CkVFHojy3zHWafziprhT',
@@ -173,7 +174,7 @@ module.exports = function() {
         STATE_ERROR: 'error',
         STATE_READY: 'ready',
 
-        BUSY_PROGRESS_MESSAGE : 'Processing..',
+        BUSY_PROGRESS_MESSAGE: 'Processing..',
 
         // srm phases
         REGISTRATION: 'REGISTRATION',
@@ -181,17 +182,17 @@ module.exports = function() {
 
         // users' status
         REGISTERED: 'REGISTERED'
-
       }
     },
-    'production': {
-      'CONSTANTS': {
+    production: {
+      CONSTANTS: {
         API_URL: process.env.API_URL || 'https://api.topcoder.com/v3.0.0',
         AUTH_API_URL: process.env.AUTH_API_URL || 'https://api.topcoder.com/v3',
         API_URL_V2: process.env.API_URL_V2 || 'https://api.topcoder.com/v2',
         ASSET_PREFIX: process.env.ASSET_PREFIX || 'https://s3.amazonaws.com/app.topcoder.com',
-        auth0Callback: process.env.auth0Callback || 'https://api.topcoder.com/pub/callback.html',
+
         // auth0Callback: process.env.auth0Callback || 'https://www.topcoder.com/reg2/callback.action',
+        auth0Callback: process.env.auth0Callback || 'https://api.topcoder.com/pub/callback.html',
         auth0Domain: process.env.auth0Domain || 'topcoder.auth0.com',
         BLOG_LOCATION: 'https://www.topcoder.com/feed/?post_type=blog',
         clientId: process.env.clientId || 'JFDo7HMkf0q2CkVFHojy3zHWafziprhT',
@@ -219,7 +220,7 @@ module.exports = function() {
         STATE_ERROR: 'error',
         STATE_READY: 'ready',
 
-        BUSY_PROGRESS_MESSAGE : 'Processing..',
+        BUSY_PROGRESS_MESSAGE: 'Processing..',
 
         // srm phases
         REGISTRATION: 'REGISTRATION',
@@ -227,7 +228,6 @@ module.exports = function() {
 
         // users' status
         REGISTERED: 'REGISTERED'
-
       }
     }
   };
