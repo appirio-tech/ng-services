@@ -1,7 +1,7 @@
 var wiredep = require('wiredep');
 
 module.exports = function(config) {
-  var bowerFiles = wiredep({devDependencies: true})['js'];
+  var bowerFiles = wiredep({devDependencies: true}).js;
 
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -14,13 +14,11 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [].concat(
       bowerFiles,
+      'scripts/**/*.js',
+      'logger/**/*.js',
       'tests/test-helpers/*.js',
-      './app/topcoder.module.js',
-      './app/topcoder.**.js',
-      './app/**/*.module.js',
-      './app/**/*.js',
-      './assets/scripts/**/*.js',
-      '.tmp/templates.js',
+      './services/**/*.module.js',
+      './services/**/*.js',
       'tests/server-integration/**/*.spec.js'
     ),
 
@@ -36,6 +34,7 @@ module.exports = function(config) {
     preprocessors: {
       './app/**/!(*.spec)+(.js)': ['coverage']
     },
+
     // test results reporter to use
     // possible values: 'dots', 'progress', 'coverage'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
