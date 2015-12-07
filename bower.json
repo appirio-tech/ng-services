@@ -1,0 +1,26 @@
+{
+  "name": "ng-services",
+  "description": "Topcoder Angular API services",
+  "main": "app/services.module.js",
+  "authors": [
+    "Nick Litwin <nicklitwin88@gmail.com>"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "Topcoder",
+    "services",
+    "Angular",
+    "API"
+  ],
+  "homepage": "https://github.com/appirio-tech/ng-services",
+  "moduleType": [],
+  "dependencies": {
+    "angular": "1.4.x",
+    "bardjs": "~0.1.8",
+    "angular-cookies": "~1.4.8",
+    "a0-angular-storage": "~0.0.13",
+    "angular-jwt": "~0.0.9",
+    "appirio-tech-ng-iso-constants": "git@github.com:appirio-tech/ng-iso-constants#~1.0.5",
+    "restangular": "~1.5.1"
+  }
+}
