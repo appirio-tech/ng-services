@@ -20,6 +20,10 @@
   },
   "homepage": "https://github.com/appirio-tech/ng-services",
   "devDependencies": {
-    "appirio-gulp-tasks": "3.x.x"
+  },
+  "dependencies": {
+    "appirio-gulp-tasks": "3.x.x",
+    "gulp": "3.x.x",
+    "wiredep": "^3.0.0-beta"
   }
 }
