@@ -1,0 +1,25 @@
+{
+  "name": "ng-services",
+  "version": "0.0.0",
+  "description": "Topcoder Angular API services",
+  "main": "app/services.module.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/appirio-tech/ng-services.git"
+  },
+  "keywords": [
+    "Topcoder",
+    "services",
+    "Angular",
+    "API"
+  ],
+  "author": "Nick Litwin <nicklitwin88@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/appirio-tech/ng-services/issues"
+  },
+  "homepage": "https://github.com/appirio-tech/ng-services",
+  "devDependencies": {
+    "appirio-gulp-tasks": "3.x.x"
+  }
+}
