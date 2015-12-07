@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-describe('ExternalWebLinks service', function() {
+xdescribe('ExternalWebLinks service', function() {
   var service;
   var mockExternalLinks = mockData.getMockExternalWebLinksData();
   var apiUrl;
@@ -8,7 +8,7 @@ describe('ExternalWebLinks service', function() {
   var linksDelete;
 
   beforeEach(function() {
-    bard.appModule('topcoder');
+    bard.appModule('tc.services');
     bard.inject(this, 'ExternalWebLinksService', 'JwtInterceptorService', '$httpBackend', 'CONSTANTS', '$q');
     bard.mockService(JwtInterceptorService, {
       getToken: $q.when('token'),

@@ -1,9 +1,9 @@
 /* jshint -W117, -W030, -W101 */
-describe('User Service', function() {
+xdescribe('User Service', function() {
   var apiUrl;
 
   beforeEach(function() {
-    bard.appModule('topcoder');
+    bard.appModule('tc.services');
     bard.inject(this, '$httpBackend', 'UserService', 'CONSTANTS');
 
     apiUrl = CONSTANTS.AUTH_API_URL;

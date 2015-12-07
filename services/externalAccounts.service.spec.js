@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-describe('ExternalAccount Service', function() {
+xdescribe('ExternalAccount Service', function() {
   var service;
   var mockAccountsData = mockData.getMockLinkedExternalAccountsData();
   var mockUserLinksData = mockData.getMockLinkedExternalAccounts();
@@ -14,7 +14,7 @@ describe('ExternalAccount Service', function() {
   var profileDelete;
 
   beforeEach(function() {
-    bard.appModule('topcoder');
+    bard.appModule('tc.services');
     bard.inject(
       this,
       'ExternalAccountService',
