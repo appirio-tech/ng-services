@@ -1,5 +1,7 @@
 // Accesses topcoder blog RSS feed and parse it into json
-(function () {
+/*jshint camelcase: false */
+/*jscs:disable requireCamelCaseOrUpperCaseIdentifiers*/
+(function() {
   'use strict';
 
   angular.module('tc.services').factory('BlogService', BlogService);
@@ -35,7 +37,7 @@
         });
 
       return deferred.promise;
-    }
+    };
 
     return service;
   }

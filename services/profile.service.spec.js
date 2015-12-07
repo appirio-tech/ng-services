@@ -16,6 +16,7 @@ describe('Profile Service', function() {
     $httpBackend
       .when('GET', apiUrl + '/members/rakesh/')
       .respond(200, {result: {content: mockProfile}});
+
     // mock stats
     $httpBackend
       .when('GET', apiUrl + '/members/rakesh/stats/')
@@ -23,12 +24,10 @@ describe('Profile Service', function() {
 
   });
 
-
   afterEach(function() {
     $httpBackend.verifyNoOutstandingExpectation();
     $httpBackend.verifyNoOutstandingRequest();
   });
-
 
   it('should return a profile', function() {
     service.getUserProfile('rakesh').then(function(profile) {
@@ -77,8 +76,5 @@ describe('Profile Service', function() {
     it('should return user handle color', function() {
       expect(service.getUserHandleColor(mockProfile.maxRating.rating)).to.be.equal('black');
     });
-
-
   });
-
 });

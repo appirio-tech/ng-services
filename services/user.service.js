@@ -52,7 +52,6 @@
       return api.all('users').withHttpConfig(_config).customGET('validateHandle', {handle: handle});
     }
 
-
     function validateUserEmail(email) {
 
       return api.all('users').withHttpConfig(_config).customGET('validateEmail', {email: email});
@@ -104,11 +103,11 @@
     }
 
     function addSocialProfile(userId, profileData) {
-      return api.one('users', userId).customPOST(profileData, "profiles", {}, {});
+      return api.one('users', userId).customPOST(profileData, 'profiles', {}, {});
     }
 
-    function removeSocialProfile (userId, account) {
-      return api.one("users", userId).one("profiles", account).remove();
+    function removeSocialProfile(userId, account) {
+      return api.one('users', userId).one('profiles', account).remove();
     }
 
     /**
@@ -121,7 +120,8 @@
 
     function getPreference(prefName) {
       var obj = UserPrefStore.get('preferences');
-      return _.get(obj, prefName)
+
+      return _.get(obj, prefName);
     }
 
     function setPreference(prefName, val) {

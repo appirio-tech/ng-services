@@ -1,3 +1,5 @@
+// allow fall-through
+/*jshint -W086 */
 (function() {
   'use strict';
 
@@ -15,7 +17,7 @@
     return service;
 
     ///////////////////////////////////////
-    
+
     function requestHandler(method, url, data, noAuthHeader) {
       var options = {
         method: method,
@@ -53,15 +55,17 @@
           .setErrorInterceptor(function(response) {
             // TODO
             switch (response.status) {
+              // All cases fall through to default, since there are no break statements
               case 403: // FORBIDDEN
               case 500: // SERVER ERROR
               case 503: // HTTP_503_SERVICE_UNAVAILABLE
               default:
-                $log.error("Restangular Error Interceptor" + JSON.stringify(response));
+                $log.error('Restangular Error Interceptor ' + JSON.stringify(response));
                 return true; // error not handled
             }
           });
-        });
+      });
+
       return _restangular;
     }
 
@@ -93,6 +97,7 @@
                 param: element
               };
             }
+
             return element;
           })
           .addResponseInterceptor(function(data, operation, what, url, response, deferred) {
@@ -108,6 +113,7 @@
               } else {
                 extractedData = data.result.content;
               }
+
               return extractedData;
             } else {
               return null; // data
@@ -115,11 +121,13 @@
           })
           .addElementTransformer('skills', function(elem) {
             // transform map to simple array
-            var skills = []
-            _.forEach(elem.skills, function(n,k) {
+            var skills = [];
+
+            _.forEach(elem.skills, function(n, k) {
               n.tagId = k;
               skills.push(n);
             });
+
             elem.skills = skills;
             return elem;
           })
@@ -130,11 +138,11 @@
               case 500: // SERVER ERROR
               case 503: // HTTP_503_SERVICE_UNAVAILABLE
               default:
-                $log.error("Restangular Error Interceptor ", response);
+                $log.error('Restangular Error Interceptor ', response);
                 return true; // error not handled
             }
           });
-        });
+      });
 
       return _restangular;
     }

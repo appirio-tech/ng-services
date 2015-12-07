@@ -53,5 +53,5 @@
 
       return ApiService.requestHandler('PUT', url, JSON.stringify(body));
     }
-  };
+  }
 })();

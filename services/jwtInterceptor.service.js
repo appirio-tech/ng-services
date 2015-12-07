@@ -10,12 +10,13 @@
     var service = {
       getToken: getToken
     };
-    ////////////
 
+    /////////////////////////////////////
     function getToken(config) {
       // skip token for .html
-      if (config.url.indexOf('.html') > -1)
+      if (config.url.indexOf('.html') > -1) {
         return null;
+      }
 
       var haveItAddItEndpoints = [
         { method: 'GET', url: '\/v3[\\d\\.\\-A-Za-z]*\/challenges'},
@@ -36,11 +37,13 @@
               $log.debug(String.supplant('Token has expired, attempting to refreshToken() for "{url}"', config));
               return AuthTokenService.refreshV3Token(token).then(function(idToken) {
                   $log.debug('Successfully refreshed V3 token.');
+
                   // v2 token doesn't expire
                   AuthTokenService.setV3Token(idToken);
                   return idToken;
                 })
                 .catch(function(resp) {
+
                   // Server will not or cannot refresh token
                   $log.debug('Unable to refresh V3 token, redirecting to login');
                   $log.debug(resp);
@@ -51,6 +54,7 @@
               return token;
             }
           }
+
           // else
           $log.debug(String.supplant('Skipping authToken for "{url}, UnAuthenticated user"', config));
           return null;
@@ -64,26 +68,31 @@
         $state.go('login');
         return;
       }
+
       // Note only v3tokens expire
       if (jwtHelper.isTokenExpired(idToken)) {
         $log.debug(String.supplant('Token has expired, attempting to refreshToken() for "{url}"', config));
         return AuthTokenService.refreshV3Token(idToken).then(function(idToken) {
-            // v2 token doesn't expire
-            $log.debug('Successfully refreshed V3 token.');
-            AuthTokenService.setV3Token(idToken);
-            return idToken;
-          })
-          .catch(function(resp) {
-            // Server will not or cannot refresh token
-            $log.debug('Unable to refresh V3 token, redirecting to login');
-            $log.debug(resp);
-            $state.go('login');
-            return null;
-          });
+
+          // v2 token doesn't expire
+          $log.debug('Successfully refreshed V3 token.');
+          AuthTokenService.setV3Token(idToken);
+          return idToken;
+        })
+        .catch(function(resp) {
+
+          // Server will not or cannot refresh token
+          $log.debug('Unable to refresh V3 token, redirecting to login');
+          $log.debug(resp);
+          $state.go('login');
+          return null;
+        });
+
       } else {
         return idToken;
       }
     }
+
     return service;
-  };
+  }
 })();

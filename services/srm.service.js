@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular.module('tc.services').factory('SRMService', SRMService);
@@ -30,20 +30,24 @@
       return api.all('srmResults').getList(params);
     }
 
-    function processSRM (srm) {
+    function processSRM(srm) {
       if (Array.isArray(srm.rounds) && srm.rounds.length) {
         if (srm.rounds[0].userSRMDetails && srm.rounds[0].userSRMDetails.rated) {
           srm.result = srm.rounds[0].userSRMDetails;
         }
+
         if (srm.rounds[0].codingStartAt) {
           srm.codingStartAt = srm.rounds[0].codingStartAt;
         }
+
         if (srm.rounds[0].codingEndAt) {
           srm.codingEndAt = srm.rounds[0].codingEndAt;
         }
+
         if (srm.rounds[0].registrationStartAt) {
           srm.registrationStartAt = srm.rounds[0].registrationStartAt;
         }
+
         if (srm.rounds[0].registrationEndAt) {
           srm.registrationEndAt = srm.rounds[0].registrationEndAt;
         }
@@ -53,13 +57,16 @@
       var start = moment(srm.registrationStartAt).unix();
       var end = moment(srm.registrationEndAt).unix();
       var now = moment().unix();
+
       if (start <= now && end >= now) {
         srm.currentPhase = CONSTANTS.REGISTRATION;
       }
+
       // determines if the current phase is coding
-      var start = moment(srm.codingStartAt).unix();
-      var end = moment(srm.codingEndAt).unix();
-      var now = moment().unix();
+      start = moment(srm.codingStartAt).unix();
+      end = moment(srm.codingEndAt).unix();
+      now = moment().unix();
+
       if (start <= now && end >= now) {
         srm.currentPhase = CONSTANTS.CODING;
       }

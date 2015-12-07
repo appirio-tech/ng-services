@@ -1,3 +1,4 @@
+/*jshint maxlen: 500 */
 (function() {
   'use strict';
 
@@ -45,14 +46,17 @@
           return getIntroData(currentPage);
         }
 
-        if (!userIntroJSStats.profileAboutIntroComplete && _.contains(currentPage, 'profile.about') && userHandle === handleInParams) {
+        if (!userIntroJSStats.profileAboutIntroComplete && _.contains(currentPage, 'profile.about') &&
+          userHandle === handleInParams) {
           userIntroJSStats.profileAboutIntroComplete = true;
           store.set(userId, userIntroJSStats);
 
           return getIntroData(currentPage);
         }
 
-        if (!userIntroJSStats.profileSubtrackIntroComplete && _.contains(currentPage, 'profile.subtrack') && userHandle === handleInParams && $stateParams.subTrack.toLowerCase() !== 'copilot') {
+        if (!userIntroJSStats.profileSubtrackIntroComplete &&
+          _.contains(currentPage, 'profile.subtrack') && userHandle === handleInParams &&
+          $stateParams.subTrack.toLowerCase() !== 'copilot') {
           userIntroJSStats.profileSubtrackIntroComplete = true;
           store.set(userId, userIntroJSStats);
 
@@ -64,7 +68,7 @@
     }
 
     var _introJSData = {
-      'default': {
+      default: {
         steps:[],
         showStepNumbers: false,
         exitOnOverlayClick: true,

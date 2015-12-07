@@ -42,7 +42,7 @@ describe('TcAuthService', function() {
           return 'v2Token';
         },
         getV3Token: function() {
-          return ;
+          return;
         },
         getTCSSOToken: function() {
           return 'tcssoToken';

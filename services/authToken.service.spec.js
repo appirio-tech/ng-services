@@ -4,29 +4,31 @@ describe('TcAuthToken Service', function() {
   var service;
 
   var fakeStore = {
-      get: sinon.spy(function(name) {
-        return "value";
-      }),
-      set: sinon.spy(function(name, value) {
-        return "";
-      }),
-      remove: sinon.spy(function(name) {
-        return "";
-      })
-    },
-    fakeCookies = {
-      get: sinon.spy(function(name) {
-        return "value";
-      }),
-      remove: sinon.spy(function(name) {
-        return;
-      })
-    },
-    fakeJwtHelper = {
-      decodeToken: sinon.spy(function(token) {
-        return "decodedToken"
-      })
-    };
+    get: sinon.spy(function(name) {
+      return 'value';
+    }),
+    set: sinon.spy(function(name, value) {
+      return '';
+    }),
+    remove: sinon.spy(function(name) {
+      return '';
+    })
+  };
+
+  var fakeCookies = {
+    get: sinon.spy(function(name) {
+      return 'value';
+    }),
+    remove: sinon.spy(function(name) {
+      return;
+    })
+  };
+
+  var fakeJwtHelper = {
+    decodeToken: sinon.spy(function(token) {
+      return 'decodedToken';
+    })
+  };
 
   beforeEach(function() {
     bard.appModule('tc.services', function($provide) {
@@ -34,49 +36,61 @@ describe('TcAuthToken Service', function() {
       $provide.value('$cookies', fakeCookies);
       $provide.value('jwtHelper', fakeJwtHelper);
     });
-    bard.inject(this, '$httpBackend', '$window', 'CONSTANTS', '$cookies', 'store', '$http', 'jwtHelper', 'AuthTokenService');
+
+    bard.inject(
+      this,
+      '$httpBackend',
+      '$window',
+      'CONSTANTS',
+      '$cookies',
+      'store',
+      '$http',
+      'jwtHelper',
+      'AuthTokenService'
+    );
+
     service = AuthTokenService;
   });
 
-  describe("AuthToken Service ", function() {
+  describe('AuthToken Service ', function() {
 
-    it('should call store to get v3 token"', function() {
-      expect(service.getV3Token()).to.equal("value");
+    it('should call store to get v3 token', function() {
+      expect(service.getV3Token()).to.equal('value');
       expect(store.get).to.be.have.been.calledWith('appiriojwt');
     });
 
-    it('should call store to set v3 token"', function() {
-      service.setV3Token("test");
-      expect(store.set).to.be.have.been.calledWith('appiriojwt', "test");
+    it('should call store to set v3 token', function() {
+      service.setV3Token('test');
+      expect(store.set).to.be.have.been.calledWith('appiriojwt', 'test');
     });
 
-    it('should retrieve token from cookie"', function() {
+    it('should retrieve token from cookie', function() {
       expect(service.getV2Token()).to.equal('value');
       expect($cookies.get).to.be.have.been.calledWith('tcjwt');
     });
 
-    it('should remove tokens from store & cookie"', function() {
+    it('should remove tokens from store & cookie', function() {
       service.removeTokens();
       expect($cookies.remove).to.have.been.calledWith('tcjwt');
       expect($cookies.remove).to.have.been.calledWith('tcsso');
       expect(store.remove).to.be.have.been.calledWith('appiriojwt');
     });
 
-    it('should use jwtHelper to decode token"', function() {
-      expect(service.decodeToken("test")).to.equal("decodedToken");
-      expect(jwtHelper.decodeToken).to.be.have.been.calledWith("test");
+    it('should use jwtHelper to decode token', function() {
+      expect(service.decodeToken('test')).to.equal('decodedToken');
+      expect(jwtHelper.decodeToken).to.be.have.been.calledWith('test');
     });
 
   });
 
-  describe("Auth service ", function() {
+  describe('Auth service ', function() {
     beforeEach(function() {
       $httpBackend
         .whenPOST(apiUrl + '/authorizations', {})
         .respond(200, {
           result: {
             content: {
-              token: "newToken"
+              token: 'newToken'
             }
           }
         }
@@ -87,46 +101,46 @@ describe('TcAuthToken Service', function() {
           apiUrl + '/authorizations',
           {
             param: {
-              refreshToken: "refreshToken",
-              externalToken: "idToken"
+              refreshToken: 'refreshToken',
+              externalToken: 'idToken'
             }
           })
         .respond(200, {
           result: {
             content: {
-              token: "newToken"
+              token: 'newToken'
             }
           }
         });
-        $httpBackend
-        .whenGET(apiUrl + '/authorizations/1')
-        .respond(200, {
-          result: {
-            content: {
-              token: "newToken"
-            }
+      $httpBackend
+      .whenGET(apiUrl + '/authorizations/1')
+      .respond(200, {
+        result: {
+          content: {
+            token: 'newToken'
           }
-        });
+        }
+      });
     });
 
     it('should make a POST request to /authorizations', function() {
-      service.getTokenFromAuth0Code("test");
+      service.getTokenFromAuth0Code('test');
       $httpBackend.expectPOST(
         apiUrl + '/authorizations', {}, {
           'Content-Type': 'application/json',
-          'Authorization': 'Auth0Code test'
+          Authorization: 'Auth0Code test'
         }
       );
     });
 
-    it("should make a POST request to exchange V2 token for V3 token", function() {
-      service.exchangeToken("refreshToken", "idToken");
+    it('should make a POST request to exchange V2 token for V3 token', function() {
+      service.exchangeToken('refreshToken', 'idToken');
       $httpBackend.expectPOST(
         apiUrl + '/authorizations',
         {
           param: {
-            refreshToken: "refreshToken",
-            externalToken: "idToken"
+            refreshToken: 'refreshToken',
+            externalToken: 'idToken'
           }
         },
         {
@@ -135,13 +149,13 @@ describe('TcAuthToken Service', function() {
       );
     });
 
-    it("should make a GET request to refresh V3 token", function() {
-      service.exchangeToken("refreshToken", "idToken");
+    it('should make a GET request to refresh V3 token', function() {
+      service.exchangeToken('refreshToken', 'idToken');
       $httpBackend.expectGET(
         apiUrl + '/authorizations/1',
         {},
         {
-          "Authorization": "Bearer token"
+          Authorization: 'Bearer token'
         }
       );
     });

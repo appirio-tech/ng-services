@@ -7,8 +7,9 @@
 
   function AuthTokenService(CONSTANTS, $cookies, $location,  store, $http, $log, jwtHelper, $q) {
     var v2TokenKey = 'tcjwt';
-    var v2TCSSOTokenKey = 'tcsso'
+    var v2TCSSOTokenKey = 'tcsso';
     var v3TokenKey = 'appiriojwt';
+
     // use this api url over CONSTANTS
     var apiUrl = CONSTANTS.AUTH_API_URL || CONSTANTS.API_URL;
 
@@ -46,7 +47,7 @@
     function removeTokens() {
       // remove tokens
       // need to provide domain when removing cookie
-      var domain = $location.host().substring($location.host().indexOf("."));
+      var domain = $location.host().substring($location.host().indexOf('.'));
       $cookies.remove(v2TokenKey, {domain: domain});
       $cookies.remove('tcsso', {domain: domain});
       store.remove(v3TokenKey);
@@ -62,7 +63,7 @@
         url: apiUrl + '/authorizations/1',
         method: 'GET',
         headers: {
-          'Authorization': "Bearer " + token
+          Authorization: 'Bearer ' + token
         },
         data: {}
       }).then(function(res) {
@@ -77,7 +78,7 @@
 
     function exchangeToken(refreshToken, idToken) {
       var req = {
-        method: "POST",
+        method: 'POST',
         url: apiUrl + '/authorizations',
         data: {
           param: {
@@ -112,7 +113,7 @@
         skipAuthorization: true,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Auth0Code ' + code
+          Authorization: 'Auth0Code ' + code
         },
         data: {}
       };

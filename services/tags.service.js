@@ -17,7 +17,7 @@
     /////////////////////////////
 
     function getApprovedSkillTags() {
-      return api.all("tags")
+      return api.all('tags')
         .withHttpConfig({skipAuthorization: true})
         .getList({filter: 'domain=SKILLS&status=APPROVED'});
     }

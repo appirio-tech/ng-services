@@ -37,7 +37,9 @@
     }
 
     function getReviewEndDate(challengeId) {
-      var url = CONSTANTS.API_URL + '/phases/?filter=' + encodeURIComponent('challengeId=' + challengeId + '&phaseType=4');
+      var filter = 'challengeId=' + challengeId + '&phaseType=4';
+      var url = CONSTANTS.API_URL + '/phases/?filter=' + encodeURIComponent(filter);
+
       return ApiService.requestHandler('GET', url);
     }
 
@@ -50,6 +52,7 @@
       angular.forEach(challenges, function(challenge) {
         var phases = challenge.currentPhases;
         var hasCurrentPhase = false;
+
         // If currentPhase is null, the challenge is stalled and there is no end time
         challenge.userCurrentPhase = 'Stalled';
         challenge.userCurrentPhaseEndTime = null;
@@ -96,6 +99,7 @@
         if (challenge.userCurrentPhaseEndTime) {
           var fullTime = challenge.userCurrentPhaseEndTime;
           var timeAndUnit = moment(fullTime).fromNow(true);
+
           // Split into components: ['an', 'hour'] || ['2', 'months']
           timeAndUnit = timeAndUnit.split(' ');
 
@@ -141,6 +145,7 @@
         if (match.userCurrentPhaseEndTime) {
           var fullTime = match.userCurrentPhaseEndTime;
           var timeAndUnit = moment(fullTime).fromNow(true);
+
           // Split into components: ['an', 'hour'] || ['2', 'months']
           timeAndUnit = timeAndUnit.split(' ');
 
@@ -157,8 +162,8 @@
 
     function processPastMarathonMatch(challenge) {
       challenge.status = challenge.status.trim();
-      if (Array.isArray(challenge.rounds) && challenge.rounds.length
-        && challenge.rounds[0].userMMDetails && challenge.rounds[0].userMMDetails.rated) {
+      if (Array.isArray(challenge.rounds) && challenge.rounds.length &&
+        challenge.rounds[0].userMMDetails && challenge.rounds[0].userMMDetails.rated) {
         challenge.submissionEndDate = challenge.rounds[0].systemTestEndAt;
         challenge.newRating = challenge.rounds[0].userMMDetails.newRating;
         challenge.pointTotal = challenge.rounds[0].userMMDetails.pointTotal;
@@ -166,8 +171,8 @@
     }
 
     function processPastSRM(challenge) {
-      if (Array.isArray(challenge.rounds) && challenge.rounds.length
-        && challenge.rounds[0].userSRMDetails) {
+      if (Array.isArray(challenge.rounds) && challenge.rounds.length &&
+        challenge.rounds[0].userSRMDetails) {
         challenge.newRating = challenge.rounds[0].userMMDetails.newRating;
         challenge.pointTotal = challenge.rounds[0].userMMDetails.pointTotal;
       }
@@ -180,20 +185,22 @@
           // process placement for challenges having winningPlacements array in response
           if (Array.isArray(challenge.userDetails.winningPlacements)) {
             challenge.highestPlacement = _.min(challenge.userDetails.winningPlacements);
-            challenge.wonFirst = challenge.highestPlacement == 1;
+            challenge.wonFirst = challenge.highestPlacement === 1;
             if (challenge.highestPlacement === 0) {
               challenge.highestPlacement = null;
             }
           }
+
           // process placement for design challenges
-          if (challenge.track == 'DESIGN' && challenge.userDetails.submissions && challenge.userDetails.submissions.length > 0) {
+          if (challenge.track === 'DESIGN' && challenge.userDetails.submissions &&
+            challenge.userDetails.submissions.length > 0) {
             challenge.thumbnailId = challenge.userDetails.submissions[0].id;
 
             challenge.highestPlacement = _.min(challenge.userDetails.submissions.filter(function(submission) {
               return submission.placement;
             }), 'placement').placement;
 
-            if (challenge.highestPlacement == 1) {
+            if (challenge.highestPlacement === 1) {
               challenge.wonFirst = true;
             }
           }
@@ -214,17 +221,17 @@
 
           if (challenge.userDetails.hasUserSubmittedForReview) {
             if (!challenge.highestPlacement) {
-              challenge.userStatus = "PASSED_SCREENING";
+              challenge.userStatus = 'PASSED_SCREENING';
             } else {
-              challenge.userStatus = "PASSED_REVIEW";
+              challenge.userStatus = 'PASSED_REVIEW';
             }
           } else {
-            challenge.userStatus = "NOT_FINISHED";
+            challenge.userStatus = 'NOT_FINISHED';
           }
 
           // if user does not has submitter role, just show Completed
           if (!challenge.userHasSubmitterRole) {
-            challenge.userStatus = "COMPLETED";
+            challenge.userStatus = 'COMPLETED';
           }
         }
       });
@@ -248,5 +255,5 @@
         }
       });
     }
-  };
+  }
 })();

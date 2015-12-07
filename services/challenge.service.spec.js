@@ -24,7 +24,8 @@ describe('Challenge Service', function() {
     ChallengeService.getChallengeDetails(123456)
     .then(function(data) {
       expect(data).to.exist;
-    })
+    });
+
     $httpBackend.flush();
   });
 
@@ -36,7 +37,8 @@ describe('Challenge Service', function() {
     ChallengeService.getChallengeDetails(123456)
     .catch(function(error) {
       expect(error.data.message).to.match(/error/);
-    })
+    });
+
     $httpBackend.flush();
   });
 

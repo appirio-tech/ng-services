@@ -5,17 +5,30 @@ describe('ExternalAccount Service', function() {
   var mockUserLinksData = mockData.getMockLinkedExternalAccounts();
   var mockAuth0Profile = mockData.getMockAuth0Profile();
   var mockProfile = mockData.getMockProfile();
-  var apiUrl, authApiUrl;
-  var auth0, userService;
-  var profileGet, profilePost, profileDelete;
-
+  var apiUrl;
+  var authApiUrl;
+  var auth0;
+  var userService;
+  var profileGet;
+  var profilePost;
+  var profileDelete;
 
   beforeEach(function() {
     bard.appModule('topcoder');
-    bard.inject(this, 'ExternalAccountService', '$httpBackend', '$q', 'CONSTANTS', 'JwtInterceptorService', 'auth', 'UserService');
+    bard.inject(
+      this,
+      'ExternalAccountService',
+      '$httpBackend',
+      '$q',
+      'CONSTANTS',
+      'JwtInterceptorService',
+      'auth',
+      'UserService'
+    );
+
     bard.mockService(JwtInterceptorService, {
-        getToken: $q.when('token'),
-        _default:    $q.when([])
+      getToken: $q.when('token'),
+      _default:    $q.when([])
     });
 
     apiUrl  = CONSTANTS.API_URL;
@@ -26,14 +39,15 @@ describe('ExternalAccount Service', function() {
 
     // mock user api
     sinon.stub(auth0, 'signin', function(params, successCallback, failureCallback) {
-      if (params && params.state == 'failure') {
-        failureCallback.call(failureCallback, "MOCK_ERROR");
+      if (params && params.state === 'failure') {
+        failureCallback.call(failureCallback, 'MOCK_ERROR');
       }
+
       successCallback.call(
         successCallback,
         mockAuth0Profile,
-        "mockAuth0IdToken",
-        "mockAuth0AccessToken",
+        'mockAuth0IdToken',
+        'mockAuth0AccessToken',
         params.state,
         null
       );
@@ -79,7 +93,8 @@ describe('ExternalAccount Service', function() {
     service.getAccountsData('test1').then(function(data) {
       data = data.plain();
       expect(data).to.be.defined;
-      expect(_.keys(data)).to.include.members(['dribbble', 'github', 'behance', 'bitbucket', 'linkedin', 'stackoverflow', 'twitter']);
+      var providerList = ['dribbble', 'github', 'behance', 'bitbucket', 'linkedin', 'stackoverflow', 'twitter'];
+      expect(_.keys(data)).to.include.members(providerList);
     });
     $httpBackend.flush();
   });
@@ -88,7 +103,7 @@ describe('ExternalAccount Service', function() {
     // spy
     service.getAllExternalLinks('test1', 111, false).then(function(data) {
       expect(data).to.be.defined;
-      expect(_.pluck(data, 'provider')).to.include.members(['dribbble', 'github','bitbucket', 'stackoverflow']);
+      expect(_.pluck(data, 'provider')).to.include.members(['dribbble', 'github', 'bitbucket', 'stackoverflow']);
       expect(_.all(_.pluck(data, 'data'))).to.be.truthy;
     });
     $httpBackend.flush();
@@ -98,9 +113,10 @@ describe('ExternalAccount Service', function() {
     // spy
     service.getAllExternalLinks('test1', 111, true).then(function(data) {
       expect(data).to.be.defined;
-      expect(_.pluck(data, 'provider')).to.include.members(['dribbble', 'github', 'behance', 'bitbucket','stackoverflow']);
+      var providerList = ['dribbble', 'github', 'behance', 'bitbucket', 'stackoverflow'];
+      expect(_.pluck(data, 'provider')).to.include.members(providerList);
       expect(data).to.have.length(5);
-      var nullAccounts = _.remove(data, function(n) {return n.data.status === 'PENDING'});
+      var nullAccounts = _.remove(data, function(n) {return n.data.status === 'PENDING';});
       expect(nullAccounts).to.have.length(1);
     });
     $httpBackend.flush();
@@ -110,19 +126,23 @@ describe('ExternalAccount Service', function() {
     var profiles = JSON.parse(JSON.stringify(mockUserLinksData));
     profiles.profiles.push({providerType: 'unsupported'});
     profileGet.respond(200, {result: {content: profiles}});
+
     // spy
     service.getAllExternalLinks('test1', 111, true).then(function(data) {
       expect(data).to.be.defined;
-      expect(_.pluck(data, 'provider')).to.include.members(['dribbble', 'github','bitbucket', 'stackoverflow']);
+      var providerList = ['dribbble', 'github', 'bitbucket', 'stackoverflow'];
+      expect(_.pluck(data, 'provider')).to.include.members(providerList);
       expect(_.all(_.pluck(data, 'data'))).to.be.truthy;
     });
     $httpBackend.flush();
   });
 
   it('should fail in returning links', function() {
-    var errorMessage = "bad request";
+    var errorMessage = 'bad request';
+
     // mocks the GET call to respond with 400 bad request
     profileGet.respond(400, {result:  { status: 400, content: errorMessage } });
+
     // calls getAllExternalLinks method with valid params
     service.getAllExternalLinks('test1', 111, true).then(function(data) {
       sinon.assert.fail('should not be called');
@@ -135,8 +155,9 @@ describe('ExternalAccount Service', function() {
 
   it('should link external account', function() {
     // call linkExternalAccount method with supporte network, should succeed
-    service.linkExternalAccount('stackoverflow', "callback").then(function(data) {
+    service.linkExternalAccount('stackoverflow', 'callback').then(function(data) {
       expect(data).to.be.defined;
+
       // console.log(data);
       expect(data.status).to.exist.to.equal('SUCCESS');
       expect(data.linkedAccount).to.exist;
@@ -148,8 +169,9 @@ describe('ExternalAccount Service', function() {
   });
 
   it('should fail with unsupported network', function() {
+
     // call linkExternalAccount method with unsupported network, should fail
-    service.linkExternalAccount('unsupported', "callback").then(function(data) {
+    service.linkExternalAccount('unsupported', 'callback').then(function(data) {
       expect(data).to.be.defined;
       expect(data.status).to.exist.to.equal('failed');
       expect(data.error.to.contain('unsupported'));
@@ -157,10 +179,11 @@ describe('ExternalAccount Service', function() {
   });
 
   it('should fail with already existing profile', function() {
-    var errorMessage = "social profile exists";
+    var errorMessage = 'social profile exists';
     profilePost.respond(400, {result:  { status: 400, content: errorMessage } });
+
     // call linkExternalAccount method, having user service throw already exist
-    service.linkExternalAccount('stackoverflow', "callback").then(function(data) {
+    service.linkExternalAccount('stackoverflow', 'callback').then(function(data) {
       sinon.assert.fail('should not be called');
     }, function(error) {
       expect(error).to.be.defined;
@@ -171,8 +194,9 @@ describe('ExternalAccount Service', function() {
   });
 
   it('should fail with auth0 error', function() {
+
     // call linkExternalAccount method with auth0 throwing error
-    service.linkExternalAccount('stackoverflow', "failure").then(function(data) {
+    service.linkExternalAccount('stackoverflow', 'failure').then(function(data) {
       sinon.assert.fail('should not be called');
     }, function(error) {
       expect(error).to.be.exist.to.equal('MOCK_ERROR');
@@ -181,10 +205,11 @@ describe('ExternalAccount Service', function() {
   });
 
   it('should fail, with fatal error, in linking external account', function() {
-    var errorMessage = "endpoint not found";
+    var errorMessage = 'endpoint not found';
     profilePost.respond(404, {result:  { status: 404, content: errorMessage } });
+
     // call unlinkExternalAccount method with supporte network, should succeed
-    service.linkExternalAccount('stackoverflow', "callback").then(function(data) {
+    service.linkExternalAccount('stackoverflow', 'callback').then(function(data) {
       sinon.assert.fail('should not be called');
     }).catch(function(error) {
       expect(error).to.be.defined;
@@ -195,11 +220,13 @@ describe('ExternalAccount Service', function() {
   });
 
   it('should unlink external account', function() {
-    var errorMessage = "social profile exists";
+    var errorMessage = 'social profile exists';
     profilePost.respond(400, {result:  { status: 400, content: errorMessage } });
+
     // call unlinkExternalAccount method with supporte network, should succeed
     service.unlinkExternalAccount('stackoverflow').then(function(data) {
       expect(data).to.be.defined;
+
       // console.log(data);
       expect(data.status).to.exist.to.equal('SUCCESS');
     });
@@ -207,8 +234,9 @@ describe('ExternalAccount Service', function() {
   });
 
   it('should fail, with profile does not exist, in unlinking external account', function() {
-    var errorMessage = "social profile does not exists";
+    var errorMessage = 'social profile does not exists';
     profileDelete.respond(404, {result:  { status: 404, content: errorMessage } });
+
     // call unlinkExternalAccount method with supporte network, should succeed
     service.unlinkExternalAccount('stackoverflow').then(function(data) {
       sinon.assert.fail('should not be called');
@@ -221,9 +249,10 @@ describe('ExternalAccount Service', function() {
   });
 
   it('should fail, with fatal error, in unlinking external account', function() {
-    var errorMessage = "bad request";
+    var errorMessage = 'bad request';
     profileDelete.respond(400, {result:  { status: 400, content: errorMessage } });
-    // call unlinkExternalAccount method with supporte network, should succeed
+
+    // call unlinkExternalAccount method with supported network, should succeed
     service.unlinkExternalAccount('stackoverflow').then(function(data) {
       sinon.assert.fail('should not be called');
     }).catch(function(error) {

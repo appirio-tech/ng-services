@@ -23,7 +23,7 @@
         domain: CONSTANTS.auth0Domain,
         clientID: CONSTANTS.clientId,
         sso: false
-      })
+      });
 
     }])
     .factory('UserPrefStore', ['store', function(store) {

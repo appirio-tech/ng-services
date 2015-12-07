@@ -3,15 +3,16 @@ describe('ExternalWebLinks service', function() {
   var service;
   var mockExternalLinks = mockData.getMockExternalWebLinksData();
   var apiUrl;
-  var linksGet, linksPost, linksDelete;
-
+  var linksGet;
+  var linksPost;
+  var linksDelete;
 
   beforeEach(function() {
     bard.appModule('topcoder');
     bard.inject(this, 'ExternalWebLinksService', 'JwtInterceptorService', '$httpBackend', 'CONSTANTS', '$q');
     bard.mockService(JwtInterceptorService, {
-        getToken: $q.when('token'),
-        _default:    $q.when([])
+      getToken: $q.when('token'),
+      _default: $q.when([])
     });
 
     apiUrl  = CONSTANTS.API_URL;
@@ -54,8 +55,9 @@ describe('ExternalWebLinks service', function() {
   });
 
   it('should add external link', function() {
+
     // call addLink method with valid params, should succeed
-    service.addLink('test1', "http://google.com").then(function(newLink) {
+    service.addLink('test1', 'http://google.com').then(function(newLink) {
       expect(newLink).to.be.exist;
       expect(newLink.provider).to.exist.to.equal('weblink');
       expect(newLink.data).to.exist;
@@ -65,10 +67,11 @@ describe('ExternalWebLinks service', function() {
   });
 
   it('should fail with already existing link', function() {
-    var errorMessage = "web link exists";
+    var errorMessage = 'web link exists';
     linksPost.respond(400, {result:  { status: 400, content: errorMessage } });
+
     // call linkExternalAccount method, having user service throw already exist
-    service.addLink('test1', "http://google.com").then(function(data) {
+    service.addLink('test1', 'http://google.com').then(function(data) {
       sinon.assert.fail('should not be called');
     }, function(error) {
       expect(error).to.be.defined;
@@ -79,8 +82,9 @@ describe('ExternalWebLinks service', function() {
   });
 
   it('should remove external link', function() {
+
     // call removeLink method with valid params, should succeed
-    service.removeLink('test1', "testkey").then(function(newLink) {
+    service.removeLink('test1', 'testkey').then(function(newLink) {
     }).catch(function(error) {
       sinon.assert.fail('should not be called');
     });

@@ -1,12 +1,25 @@
+/* jshint -W101, -W072 */
 (function() {
   'use strict';
 
   angular.module('tc.services').factory('TcAuthService', TcAuthService);
 
-  TcAuthService.$inject = ['CONSTANTS', 'auth', 'AuthTokenService', '$rootScope', '$q', '$log', '$timeout', 'UserService', 'Helpers', 'ApiService', 'store'];
+  TcAuthService.$inject = [
+    'CONSTANTS',
+    'auth',
+    'AuthTokenService',
+    '$rootScope',
+    '$q',
+    '$log',
+    '$timeout',
+    'UserService',
+    'Helpers',
+    'ApiService',
+    'store'
+  ];
 
   function TcAuthService(CONSTANTS, auth, AuthTokenService, $rootScope, $q, $log, $timeout, UserService, Helpers, ApiService, store) {
-    $log = $log.getInstance("TcAuthServicetcAuth");
+    $log = $log.getInstance('TcAuthServicetcAuth');
     var auth0 = auth;
     var service = {
       login: login,
@@ -18,14 +31,12 @@
     };
     return service;
 
-
-    ///////////////
+    ////////////////////////
 
     function _isEmail(usernameOrEmail) {
       var re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
       return re.test(usernameOrEmail);
     }
-
 
     function login(usernameOrEmail, password) {
       return _doLogin({
@@ -43,15 +54,17 @@
         // supported backends
         var options = {
           popup: true,
-          scope: "openid profile offline_access",
-          // state: state,
+          scope: 'openid profile offline_access'
+
+          // state: state
         };
+
         // setup more options based on input
         if (provider) {
           var providers = ['facebook', 'google-oauth2', 'twitter', 'github'];
           if (providers.indexOf(provider) < 0) {
             reject({
-              status: "UNSUPORTED_PROVIDER"
+              status: 'UNSUPORTED_PROVIDER'
             });
             return;
           } else {
@@ -76,24 +89,27 @@
                   if (userIdentity && !store.get(userIdentity.userId)) {
                     store.set(userIdentity.userId, {});
                   }
+
                   resolve();
                 }, 200);
               },
               function(resp) {
                 $log.debug(JSON.stringify(resp));
+
                 // 401 status here implies user is not registered
                 if (resp.status === 401) {
                   reject({
-                    status: "USER_NOT_REGISTERED"
+                    status: 'USER_NOT_REGISTERED'
                   });
                 }
+
                 if (resp.data.result.content.toLowerCase() === 'account inactive') {
                   reject({
-                    status: "ACCOUNT_INACTIVE"
+                    status: 'ACCOUNT_INACTIVE'
                   });
                 } else {
                   reject({
-                    status: "UKNOWN_ERROR"
+                    status: 'UKNOWN_ERROR'
                   });
                 }
               }
@@ -115,7 +131,7 @@
           auth0.signin({
               popup: true,
               connection: provider,
-              scope: "openid profile offline_access",
+              scope: 'openid profile offline_access',
               state: state
             },
             function(profile, idToken, accessToken, state, refreshToken) {
@@ -130,13 +146,13 @@
                       status: 'SUCCESS',
                       data: socialData
                     };
-                    $log.debug("socialRegister Result: " + JSON.stringify(result));
+                    $log.debug('socialRegister Result: ' + JSON.stringify(result));
                     resolve(result);
                   } else {
                     if (resp.reasonCode === 'ALREADY_IN_USE') {
                       $log.error('Social handle exist');
                       reject({
-                        status: "SOCIAL_PROFILE_ALREADY_EXISTS"
+                        status: 'SOCIAL_PROFILE_ALREADY_EXISTS'
                       });
                     }
                   }
@@ -147,15 +163,15 @@
                 });
             },
             function(error) {
-              $log.warn("onSocialLoginFailure " + JSON.stringify(error));
+              $log.warn('onSocialLoginFailure ' + JSON.stringify(error));
               reject(error);
             }
           );
         } else {
           $log.error('Unsupported social login provider: ' + provider);
           reject({
-            status: "FAILED",
-            "error": "Unsupported social login provider '" + provider + "'"
+            status: 'FAILED',
+            error: 'Unsupported social login provider \'' + provider + '\''
           });
         }
       });

@@ -30,7 +30,7 @@
      * @return list of linked Accounts
      */
     function getLinkedAccounts(userId) {
-      return userApi.one('users', userId).get({fields:"profiles"})
+      return userApi.one('users', userId).get({fields:'profiles'})
       .then(function(result) {
         angular.forEach(result.profiles, function(p) {
           p.provider = p.providerType;
@@ -53,18 +53,19 @@
       return $q(function($resolve, $reject) {
         UserService.removeSocialProfile(user.userId, account)
         .then(function(resp) {
-          $log.debug("Succesfully unlinked account: " + JSON.stringify(resp));
+          $log.debug('Succesfully unlinked account: ' + JSON.stringify(resp));
           $resolve({
-            status: "SUCCESS"
+            status: 'SUCCESS'
           });
         })
         .catch(function(resp) {
-          $log.error("Error unlinking account: " + resp.data.result.content);
-          var status = "FATAL_ERROR";
+          $log.error('Error unlinking account: ' + resp.data.result.content);
+          var status = 'FATAL_ERROR';
           var msg = resp.data.result.content;
           if (resp.status === 404) {
-            status = "SOCIAL_PROFILE_NOT_EXIST";
+            status = 'SOCIAL_PROFILE_NOT_EXIST';
           }
+
           $reject({
             status: status,
             msg: msg
@@ -73,18 +74,20 @@
       });
     }
 
-
     function _convertAccountsIntoCards(links, data, includePending) {
       var _cards = [];
       if (!links.length) {
-         var providers = _.omit(data, ['userId', 'updatedAt', 'createdAt', 'createdBy', 'updatedBy', 'handle']);
+
         // populate the externalLinks for external-account-data directive with info from ext accounts data
+        var providers = _.omit(data, ['userId', 'updatedAt', 'createdAt', 'createdBy', 'updatedBy', 'handle']);
 
         angular.forEach(_.keys(providers), function(p) {
-          if (providers[p])
+          if (providers[p]) {
             links.push({provider: p});
+          }
         });
       }
+
       // handling external accounts first
       angular.forEach(links, function(link) {
         var provider = link.provider;
@@ -96,29 +99,29 @@
           _cards.push({provider: provider, data: {handle: link.name, status: 'PENDING'}});
         }
       });
-      $log.debug("Processed Accounts Cards: " + JSON.stringify(_cards));
+      $log.debug('Processed Accounts Cards: ' + JSON.stringify(_cards));
       return _cards;
     }
-
 
     function getAllExternalLinks(userHandle, userId, includePending) {
       return $q(function(resolve, reject) {
         var _promises = [getAccountsData(userHandle)];
-        if (includePending)
+        if (includePending) {
           _promises.push(getLinkedAccounts(userId));
+        }
 
         $q.all(_promises).then(function(data) {
-          var links = includePending ? data[1]: [];
+          var links = includePending ? data[1] : [];
           var _cards = _convertAccountsIntoCards(links, data[0].plain(), includePending);
+
           // TODO add weblinks
           resolve(_cards);
         }).catch(function(resp) {
           $log.error(resp);
           reject(resp);
-        })
-      })
+        });
+      });
     }
-
 
     function linkExternalAccount(provider, callbackUrl) {
       return $q(function(resolve, reject) {
@@ -128,11 +131,11 @@
           auth0.signin({
               popup: true,
               connection: provider,
-              scope: "openid profile offline_access",
-              state: callbackUrl,
+              scope: 'openid profile offline_access',
+              state: callbackUrl
             },
             function(profile, idToken, accessToken, state, refreshToken) {
-              $log.debug("onSocialLoginSuccess");
+              $log.debug('onSocialLoginSuccess');
               var socialData = Helpers.getSocialUserData(profile, accessToken);
               var user = UserService.getUserIdentity();
               var postData = {
@@ -149,13 +152,15 @@
               if (socialData.accessTokenSecret) {
                 postData.context.accessTokenSecret = socialData.accessTokenSecret;
               }
-              $log.debug("link API postdata: " + JSON.stringify(postData));
-              userApi.one('users', user.userId).customPOST(postData, "profiles", {}, {})
+
+              $log.debug('link API postdata: ' + JSON.stringify(postData));
+              userApi.one('users', user.userId).customPOST(postData, 'profiles', {}, {})
                 .then(function(resp) {
-                  $log.debug("Succesfully linked account: " + JSON.stringify(resp));
-                  // construct "card" object and resolve it
+                  $log.debug('Succesfully linked account: ' + JSON.stringify(resp));
+
+                  // construct 'card' object and resolve it
                   var _data = {
-                    status: "SUCCESS",
+                    status: 'SUCCESS',
                     linkedAccount: {
                       provider: provider,
                       data: postData
@@ -165,11 +170,12 @@
                   resolve(_data);
                 })
                 .catch(function(resp) {
-                  var errorStatus = "FATAL_ERROR";
-                  $log.error("Error linking account: " + resp.data.result.content);
+                  var errorStatus = 'FATAL_ERROR';
+                  $log.error('Error linking account: ' + resp.data.result.content);
                   if (resp.data.result && resp.data.result.status === 400) {
-                    errorStatus = "SOCIAL_PROFILE_ALREADY_EXISTS";
+                    errorStatus = 'SOCIAL_PROFILE_ALREADY_EXISTS';
                   }
+
                   reject({
                     status: errorStatus,
                     msg: resp.data.result.content
@@ -177,18 +183,18 @@
                 });
             },
             function(error) {
-              $log.warn("onSocialLoginFailure " + JSON.stringify(error));
+              $log.warn('onSocialLoginFailure ' + JSON.stringify(error));
               reject(error);
             }
           );
         } else {
           $log.error('Unsupported social login backend: ' + provider);
           $q.reject({
-            status: "failed",
-            "error": "Unsupported social login backend '" + provider + "'"
+            status: 'failed',
+            error: 'Unsupported social login backend \'' + provider + '\''
           });
         }
       });
-    };
+    }
   }
 })();

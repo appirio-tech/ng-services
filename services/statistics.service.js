@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular.module('tc.services').factory('StatisticsService', StatisticsService);
@@ -6,7 +6,6 @@
   StatisticsService.$inject = ['CONSTANTS', 'ApiService'];
 
   function StatisticsService(CONSTANTS, ApiService) {
-
     var service = {
       getDevTop: getDevTop,
       getDesignTop: getDesignTop,
@@ -15,9 +14,7 @@
     };
     return service;
 
-    ///////////////
-
-
+    //////////////////////////////////
     function getPlatformStats() {
       return ApiService.restangularV2.all('platform')
         .withHttpConfig({skipAuthorization: true})
@@ -47,6 +44,5 @@
       // var url = CONSTANTS.API_URL_V2 + '/data/srm/statistics/tops?pageSize=' + size;
       // return ApiService.requestHandler('GET', url);
     }
-  };
+  }
 })();
-

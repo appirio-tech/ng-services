@@ -6,7 +6,7 @@
   ExternalWebLinksService.$inject = ['$log', 'CONSTANTS', 'ApiService', '$q'];
 
   function ExternalWebLinksService($log, CONSTANTS, ApiService, $q) {
-    $log = $log.getInstance("ExternalWebLinksService");
+    $log = $log.getInstance('ExternalWebLinksService');
 
     var memberApi = ApiService.getApiServiceProvider('MEMBER');
 
@@ -30,6 +30,7 @@
               return _.get(l, 'synchronizedAt') === 0;
             });
           }
+
           // add provider type as weblink
           links = _(links).forEach(function(l) {
             l.provider = 'weblink';
@@ -43,7 +44,7 @@
 
     function addLink(userHandle, url) {
       return $q(function(resolve, reject) {
-        memberApi.one('members', userHandle).customPOST({'url': url}, 'externalLinks')
+        memberApi.one('members', userHandle).customPOST({url: url}, 'externalLinks')
         .then(function(resp) {
           var _newLink = {
             provider: 'weblink',
@@ -53,11 +54,12 @@
           resolve(_newLink);
         })
         .catch(function(resp) {
-          var errorStatus = "FATAL_ERROR";
-          $log.error("Error adding weblink: " + resp.data.result.content);
+          var errorStatus = 'FATAL_ERROR';
+          $log.error('Error adding weblink: ' + resp.data.result.content);
           if (resp.data.result && resp.data.result.status === 400) {
-            errorStatus = "WEBLINK_ALREADY_EXISTS";
+            errorStatus = 'WEBLINK_ALREADY_EXISTS';
           }
+
           reject({
             status: errorStatus,
             msg: resp.data.result.content

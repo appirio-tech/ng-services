@@ -71,9 +71,10 @@
             }
           });
         } else if (status >= 400) {
-          $log.error('Error uploading to S3 with status: ' + status);
+          var error = 'Error uploading to S3 with status: ' + status;
+          $log.error(error);
           toaster.pop('error', 'Whoops!', 'There was an error uploading your profile image. Please try again later.');
-          deferred.reject(err);
+          deferred.reject(error);
         }
       };
 
@@ -81,12 +82,11 @@
         $log.info('Error uploading to s3');
         toaster.pop('error', 'Whoops!', 'There was an error uploading your profile image. Please try again later.');
         deferred.reject(err);
-      }
+      };
 
       xhr.send(response.file);
 
       return deferred.promise;
     }
-  };
-
+  }
 })();
