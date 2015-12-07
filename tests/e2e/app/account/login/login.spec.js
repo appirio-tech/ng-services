@@ -1,25 +1,25 @@
 // spec.js
- var loginPage = require('./login.object');
- var loginUser = require('./login.data');
- 
- 
- 
-	 describe('login', function() {
-		 console.log(loginUser.userCredentials.length);
-		 var i=0;
-		 for (; i< loginUser.userCredentials.length; i++) {
-			 console.log('user creds :'+loginUser.userCredentials[i].username);
-			 (function(loginUserCred) {
-				 it('welcomes the user', function() {
-					 loginPage.get(loginUser.baseUrl);
-					 loginPage.login(loginUserCred);
-				 });
-		  
-				 it('welcomes the user for logout', function() {
-					 loginPage.logOut();
-				 });
-		  
-//				 afterEach(function() {  
+var loginPage = require('./login.object');
+var loginUser = require('./login.data');
+
+describe('login', function() {
+	console.log(loginUser.userCredentials.length);
+
+	var i=0;
+	for (; i< loginUser.userCredentials.length; i++) {
+		console.log('user creds :'+loginUser.userCredentials[i].username);
+
+		(function(loginUserCred) {
+			it('welcomes the user', function() {
+				loginPage.get(loginUser.baseUrl);
+				loginPage.login(loginUserCred);
+  		});
+
+			it('welcomes the user for logout', function() {
+				loginPage.logOut();
+			});
+
+//				 afterEach(function() {
 //					 browser.manage().logs().get('browser').then(function(browserLog) {
 //						 var i = 0,
 //						 severWarnings = false;
@@ -37,58 +37,58 @@
 ////						 expect(severWarnings).toBe(false);
 //					 });
 //				 });
-		        })(loginUser.userCredentials[i]);
-			 
-			 
-		 }
-		 i=0;
-		for(;i < loginUser.twitterCredentials.length; i++) {
-			 (function(loginUserCred) {
-				 it('Welcomes the user', function() {
-					 console.log('loginUser.baseUrl'+loginUser.baseUrl);
+    })(loginUser.userCredentials[i]);
+	}
+
+	i=0;
+	for(;i < loginUser.twitterCredentials.length; i++) {
+		(function(loginUserCred) {
+			it('Welcomes the user', function() {
+				console.log('loginUser.baseUrl'+loginUser.baseUrl);
 //					 console.log('loginUserCred'+loginUserCred.username);
-					 loginPage.get(loginUser.baseUrl);
-					 loginPage.twitterLogin(loginUserCred);
-				 });
-		  
-				 it('Twitter user logout', function() {
-					 loginPage.logOut();
-				 });
+				loginPage.get(loginUser.baseUrl);
+				loginPage.twitterLogin(loginUserCred);
+			});
 
-				afterEach(function() {  
-					 browser.manage().logs().get('browser').then(function(browserLog) {
-						 var i = 0,
-						 severWarnings = false;
+			it('Twitter user logout', function() {
+				loginPage.logOut();
+			});
 
-						 for(i; i <= browserLog.length-1; i++){
-							 if(browserLog[i].level.name === 'SEVERE'){
-								 console.log('\n' + browserLog[i].level.name);
-								 //uncomment to see the error
-								 console.log('(Possibly exception) \n' + browserLog[i].message);
+			afterEach(function() {
+				browser.manage().logs().get('browser').then(function(browserLog) {
+					var i = 0,
+					severWarnings = false;
 
-								 severWarnings = true;
-							 }
-						 }
-						 //remove it to run test case even if test case is successful
+					for(i; i <= browserLog.length-1; i++){
+						if(browserLog[i].level.name === 'SEVERE'){
+							console.log('\n' + browserLog[i].level.name);
+							//uncomment to see the error
+							console.log('(Possibly exception) \n' + browserLog[i].message);
+
+							severWarnings = true;
+						}
+					}
+					 //remove it to run test case even if test case is successful
 //						 expect(severWarnings).toBe(false);
-					 });
-				 });
-			 })(loginUser.twitterCredentials[i]);
-		 }
-		i=0;
-		for(;i < loginUser.fbCredentials.length; i++) {
-			 (function(loginUserCred) {
-				 it('Welcomes the Facebook user', function() {
-					 console.log('loginUser.baseUrl'+loginUser.baseUrl);
-					 loginPage.get(loginUser.baseUrl);
-					 loginPage.fbLogin(loginUserCred);
-				 });
-		  
-				 it('Facebook User logout', function() {
-					 loginPage.logOut();
-				 });
-				 
-//				 afterEach(function() {  
+				});
+			});
+		})(loginUser.twitterCredentials[i]);
+	}
+
+	i=0;
+	for(;i < loginUser.fbCredentials.length; i++) {
+		(function(loginUserCred) {
+			it('Welcomes the Facebook user', function() {
+				console.log('loginUser.baseUrl'+loginUser.baseUrl);
+				loginPage.get(loginUser.baseUrl);
+				loginPage.fbLogin(loginUserCred);
+			});
+
+			it('Facebook User logout', function() {
+				loginPage.logOut();
+			});
+
+//				 afterEach(function() {
 //					 browser.manage().logs().get('browser').then(function(browserLog) {
 //						 var i = 0,
 //						 severWarnings = false;
@@ -106,24 +106,25 @@
 ////						 expect(severWarnings).toBe(false);
 //					 });
 //				 });
-				 
-				 
-			 })(loginUser.fbCredentials[i]);
-		 }
-		i=0;
-		for(;i < loginUser.googleCredentials.length; i++) {
-			 (function(loginUserCred) {
-				 it('Welcomes the Google user', function() {
-					 console.log('loginUser.baseUrl'+loginUser.baseUrl);
-					 loginPage.get(loginUser.baseUrl);
-					 loginPage.googleLogin(loginUserCred);
-				 });
-		  
-				 it('Google user logout', function() {
-					 loginPage.logOut();
-				 });
-				 
-//				 afterEach(function() {  
+
+
+		})(loginUser.fbCredentials[i]);
+	}
+
+	i=0;
+	for(;i < loginUser.googleCredentials.length; i++) {
+		(function(loginUserCred) {
+			it('Welcomes the Google user', function() {
+				console.log('loginUser.baseUrl'+loginUser.baseUrl);
+				loginPage.get(loginUser.baseUrl);
+				loginPage.googleLogin(loginUserCred);
+			});
+
+			it('Google user logout', function() {
+				loginPage.logOut();
+			});
+
+//				 afterEach(function() {
 //					 browser.manage().logs().get('browser').then(function(browserLog) {
 //						 var i = 0,
 //						 severWarnings = false;
@@ -141,23 +142,23 @@
 ////						 expect(severWarnings).toBe(false);
 //					 });
 //				 });
-			 })(loginUser.googleCredentials[i]);
-		 }
-		
-		i=0;
-		for(;i < loginUser.gitCredentials.length; i++) {
-			 (function(loginUserCred) {
-				 it('Welcomes the Git user', function() {
-					 console.log('loginUser.baseUrl'+loginUser.baseUrl);
-					 loginPage.get(loginUser.baseUrl);
-					 loginPage.gitLogin(loginUserCred);
-				 });
-		  
-				 it('Git user logout', function() {
-					 loginPage.logOut();
-				 });
-				 
-//				 afterEach(function() {  
+		})(loginUser.googleCredentials[i]);
+	}
+
+	i=0;
+	for(;i < loginUser.gitCredentials.length; i++) {
+		 (function(loginUserCred) {
+			it('Welcomes the Git user', function() {
+				console.log('loginUser.baseUrl'+loginUser.baseUrl);
+				loginPage.get(loginUser.baseUrl);
+				loginPage.gitLogin(loginUserCred);
+			});
+
+			it('Git user logout', function() {
+				loginPage.logOut();
+			});
+
+//				 afterEach(function() {
 //					 browser.manage().logs().get('browser').then(function(browserLog) {
 //						 var i = 0,
 //						 severWarnings = false;
@@ -175,8 +176,6 @@
 ////						 expect(severWarnings).toBe(false);
 //					 });
 //				 });
-			 })(loginUser.gitCredentials[i]);
-		 }
-			 
-  
+		})(loginUser.gitCredentials[i]);
+	}
 });
