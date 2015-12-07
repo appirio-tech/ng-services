@@ -54,6 +54,7 @@
   "globals": {
     "angular": false,
     "_": false,
-    "moment": false
+    "moment": false,
+    "_kmq": false
   }
 }
