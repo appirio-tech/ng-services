@@ -2,9 +2,6 @@
   "name": "ng-services",
   "description": "Topcoder Angular API services",
   "main": "app/services.module.js",
-  "authors": [
-    "Nick Litwin <nicklitwin88@gmail.com>"
-  ],
   "license": "ISC",
   "keywords": [
     "Topcoder",
